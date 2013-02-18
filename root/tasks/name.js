@@ -10,8 +10,8 @@
 
 module.exports = function(grunt) {
 
-  // Please see the grunt documentation for more information regarding task
-  // creation: https://github.com/gruntjs/grunt/blob/devel/docs/toc.md
+  // Please see the Grunt documentation for more information regarding task
+  // creation: http://gruntjs.com/creating-tasks
 
   grunt.registerMultiTask('{%= short_name %}', 'Your task description goes here.', function() {
     // Merge task-specific and/or target-specific options with these defaults.
@@ -21,30 +21,29 @@ module.exports = function(grunt) {
     });
 
     // Iterate over all specified file groups.
-    this.files.forEach(function(fileObj) {
-      // The source files to be concatenated. The "nonull" option is used
-      // to retain invalid files/patterns so they can be warned about.
-      var files = grunt.file.expand({nonull: true}, fileObj.src);
-
+    this.files.forEach(function(f) {
       // Concat specified files.
-      var src = files.map(function(filepath) {
-        // Warn if a source file/pattern was invalid.
+      var src = f.src.filter(function(filepath) {
+        // Warn on and remove invalid source files (if nonull was set).
         if (!grunt.file.exists(filepath)) {
-          grunt.log.error('Source file "' + filepath + '" not found.');
-          return '';
+          grunt.log.warn('Source file "' + filepath + '" not found.');
+          return false;
+        } else {
+          return true;
         }
+      }).map(function(filepath) {
         // Read file source.
         return grunt.file.read(filepath);
-      }).join(options.separator);
+      }).join(grunt.util.normalizelf(options.separator));
 
       // Handle options.
       src += options.punctuation;
 
       // Write the destination file.
-      grunt.file.write(fileObj.dest, src);
+      grunt.file.write(f.dest, src);
 
       // Print a success message.
-      grunt.log.writeln('File "' + fileObj.dest + '" created.');
+      grunt.log.writeln('File "' + f.dest + '" created.');
     });
   });
 

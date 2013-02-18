@@ -9,11 +9,19 @@
 'use strict';
 
 // Basic template description.
-exports.description = 'Create a grunt plugin, including Nodeunit unit tests.';
+exports.description = 'Create a Grunt plugin, including Nodeunit unit tests.';
 
 // Template-specific notes to be displayed before question prompts.
-exports.notes = 'The grunt plugin system is still under development. For ' +
-  'more information, see the docs at https://github.com/gruntjs/grunt/blob/master/docs/plugins.md';
+exports.notes = 'For more information about Grunt plugin best practices, ' +
+  'please see the docs at http://gruntjs.com/creating-plugins';
+
+// Template-specific notes to be displayed after question prompts.
+exports.after = 'You should now install project dependencies with _npm ' +
+  'install_. After that, you may execute project tasks with _grunt_. For ' +
+  'more information about installing and configuring Grunt, please see ' +
+  'the Getting Started guide:' +
+  '\n\n' +
+  'http://gruntjs.com/getting-started';
 
 // Any existing file or directory matching this wildcard will cause a warning.
 exports.warnOn = '*';
@@ -26,19 +34,18 @@ exports.template = function(grunt, init, done) {
     init.prompt('name', function(value, props, done) {
       // Prepend grunt- to default name.
       var name = 'grunt-' + value;
-
       // Replace 'grunt-contrib' with 'grunt' and give a warning
-      if (/^grunt-contrib/.test(name)) {
-        var message = 'Omitting "contrib" from your project\'s name. The grunt-contrib ' +
-                      'namespace is reserved for tasks maintained by the grunt team.';
-
-        grunt.log.writelns(message.red);
-        name = name.replace(/^grunt-contrib/,'grunt');
+      var contribRe = /^grunt-contrib/;
+      if (contribRe.test(name)) {
+        grunt.log.writelns((
+          'Removing "contrib" from your project\'s name. The grunt-contrib ' +
+          'namespace is reserved for tasks maintained by the grunt team.'
+        ).red);
+        name = name.replace(contribRe, 'grunt');
       }
-
       done(null, name);
     }),
-    init.prompt('description', 'The best grunt plugin ever.'),
+    init.prompt('description', 'The best Grunt plugin ever.'),
     init.prompt('version'),
     init.prompt('repository'),
     init.prompt('homepage'),
@@ -56,12 +63,12 @@ exports.template = function(grunt, init, done) {
     props.npm_test = 'grunt test';
     props.keywords = ['gruntplugin'];
     props.devDependencies = {
-      // TODO: ADJUST VERSIONS FOR 0.4.0 FINAL
-      'grunt-contrib-jshint': '0.1.1rc6',
-      'grunt-contrib-clean': '0.4.0rc6',
-      'grunt-contrib-nodeunit': '0.1.2rc6',
-      // TODO: REMOVE FOR 0.4.0 FINAL
-      'grunt': '0.4.0rc6',
+      'grunt-contrib-jshint': '~0.1.1',
+      'grunt-contrib-clean': '~0.4.0',
+      'grunt-contrib-nodeunit': '~0.1.2',
+    };
+    props.peerDependencies = {
+      'grunt': props.grunt_version,
     };
 
     // Files to copy (and process).
