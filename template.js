@@ -60,12 +60,13 @@ exports.template = function(grunt, init, done) {
     // Set a few grunt-plugin-specific properties.
     props.short_name = props.name.replace(/^grunt[\-_]?/, '').replace(/[\W_]+/g, '_').replace(/^(\d)/, '_$1');
     props.main = 'Gruntfile.js';
-    props.npm_test = 'grunt test';
+    props.npm_test = 'node_modules/.bin/grunt test';
     props.keywords = ['gruntplugin'];
     props.devDependencies = {
       'grunt-contrib-jshint': '~0.1.1',
       'grunt-contrib-clean': '~0.4.0',
       'grunt-contrib-nodeunit': '~0.1.2',
+      'grunt-cli': '~0.1.9',
     };
     props.peerDependencies = {
       'grunt': props.grunt_version,
