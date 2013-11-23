@@ -32,7 +32,7 @@ grunt.initConfig({
       // Target-specific file lists and/or options go here.
     },
   },
-})
+});
 ```
 
 ### Options
@@ -62,7 +62,7 @@ grunt.initConfig({
       'dest/default_options': ['src/testing', 'src/123'],
     },
   },
-})
+});
 ```
 
 #### Custom Options
@@ -79,7 +79,7 @@ grunt.initConfig({
       'dest/default_options': ['src/testing', 'src/123'],
     },
   },
-})
+});
 ```
 
 ## Contributing
