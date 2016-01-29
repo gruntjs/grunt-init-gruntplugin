@@ -66,9 +66,6 @@ exports.template = function(grunt, init, done) {
       'grunt-contrib-clean': '^0.5.0',
       'grunt-contrib-nodeunit': '^0.3.3',
     };
-    props.peerDependencies = {
-      'grunt': props.grunt_version,
-    };
 
     // Files to copy (and process).
     var files = init.filesToCopy(props);
